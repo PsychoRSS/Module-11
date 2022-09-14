@@ -6,13 +6,13 @@ const {
   writeToFile,
 } = require('../helpers/fsUtils');
 
-// GET Route for retrieving all the tips
-notes.get('/', (req, res) => {
+// GET Route for retrieving all the note
+notes.get('/notes', (req, res) => {
   readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
 });
 
-// GET Route for a specific tip
-notes.get('/:notes_id', (req, res) => {
+// GET Route for a specific note
+notes.get('notes/:notes_id', (req, res) => {
   const notesid = req.params.notes_id;
   readFromFile('./db/db.json')
     .then((data) => JSON.parse(data))
@@ -24,8 +24,8 @@ notes.get('/:notes_id', (req, res) => {
     });
 });
 
-// DELETE Route for a specific tip
-notes.delete('/:notes_id', (req, res) => {
+// DELETE Route for a specific note
+notes.delete('/notes/:notes_id', (req, res) => {
   const noteId = req.params.note_id;
   readFromFile('./db/db.json')
     .then((data) => JSON.parse(data))
@@ -38,16 +38,17 @@ notes.delete('/:notes_id', (req, res) => {
     });
 });
 
-// POST Route for a new UX/UI tip
-notes.post('/', (req, res) => {
+
+notes.post('/notes', (req, res) => {
   console.log(req.body);
 
-  const { username, topic, note } = req.body;
+  const { title, text } = req.body;
 
   if (req.body) {
     const newNote = {
       title,
       text,
+      notes_id: uuidv4(),
     };
 
     readAndAppend(newNote, './db/db.json');
